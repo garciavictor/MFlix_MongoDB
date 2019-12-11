@@ -1,4 +1,4 @@
-# Projeto utilizado no curso M220JS: MongoDB for Javascript Developers (MongoDB University) ![alt text](https://github.com/garciavictor/MFlix_MongoDB/blob/master/mongodb.png "MongoDB Logo")
+# Projeto utilizado no curso M220JS: MongoDB for Javascript Developers (MongoDB University) <img src="https://github.com/garciavictor/MFlix_MongoDB/blob/master/mongodb.png" width="30" height="30">
 
 ## Projeto
 
