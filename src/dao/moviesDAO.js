@@ -44,23 +44,8 @@ export default class MoviesDAO {
    * @returns {Promise<CountryResult>} A promise that will resolve to a list of CountryResults.
    */
   static async getMoviesByCountry(countries) {
-    /**
-    Ticket: Projection
-
-    Write a query that matches movies with the countries in the "countries"
-    list, but only returns the title and _id of each movie.
-
-    Remember that in MongoDB, the $in operator can be used with a list to
-    match one or more values of a specific field.
-    */
-
     let cursor
     try {
-      // TODO Ticket: Projection
-      // Find movies matching the "countries" list, but only return the title
-      // and _id. Do not put a limit in your own implementation, the limit
-      // here is only included to avoid sending 46000 documents down the
-      // wire.
       cursor = await movies.find(
         { countries: { $in: countries } },
         { projection: { _id: 1, title: 1 } },
@@ -108,13 +93,6 @@ export default class MoviesDAO {
    * @returns {QueryParams} The QueryParams for genre search
    */
   static genreSearchQuery(genre) {
-    /**
-    Ticket: Text and Subfield Search
-
-    Given an array of one or more genres, construct a query that searches
-    MongoDB for movies with that genre.
-    */
-
     const searchGenre = Array.isArray(genre) ? genre : genre.split(", ")
 
     const query = { genres: { $in: searchGenre } }
@@ -290,16 +268,14 @@ export default class MoviesDAO {
       ]
       return await movies.aggregate(pipeline).next()
     } catch (e) {
-      /**
-      Ticket: Error Handling
-
-      Handle the error that occurs when an invalid ID is passed to this method.
-      When this specific error is thrown, the method should return `null`.
-      */
-
-      // TODO Ticket: Error Handling
-      // Catch the InvalidId error by string matching, and then handle it.
       console.error(`Something went wrong in getMovieByID: ${e}`)
+
+      const MONGODB_ERROR_MESSAGE =
+        "Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters"
+
+      const objectIdError = e.toString().startsWith(MONGODB_ERROR_MESSAGE)
+
+      if (objectIdError) return null
       throw e
     }
   }
